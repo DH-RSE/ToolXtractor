@@ -1,7 +1,9 @@
 package eu.dariah.ToolXtractor;
 
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 public abstract class RegexPreparer {
     public static final String REGEX_FIND_WORD = "(?i)(\\b%s\\b)";
@@ -32,7 +34,14 @@ public abstract class RegexPreparer {
     }
     public static String replaceStringInText(Pattern p, String text) {
         Matcher m = p.matcher(text);
-        text = m.replaceAll("<rs type=\"software\">$1</rs>");
+        text = m.replaceAll("<rs type=\"soft.name\">$1</rs>");
+        return text;
+    }
+
+    public static String replaceStringInText(Pattern p, String text, String toolname) {
+        Matcher m = p.matcher(text);
+        //String hash = UUID.randomUUID().toString();
+        text = m.replaceAll("<ptr type=\"software\" xml:id=\"" + toolname + "\" target=\"#" + toolname + "\"></ptr><rs type=\"soft.name\" ref=\"#" + toolname + "\">$1</rs>");
         return text;
     }
 
@@ -47,4 +56,5 @@ public abstract class RegexPreparer {
         }
         return upperCase > space;
     }
+
 }

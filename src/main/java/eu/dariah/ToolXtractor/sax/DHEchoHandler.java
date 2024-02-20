@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.regex.Pattern;
 
 import eu.dariah.ToolXtractor.RegexPreparer;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
@@ -23,7 +24,11 @@ public class DHEchoHandler extends DefaultHandler {
     }
 
     public void startDocument() throws SAXException {
-        emit("<?xml version='1.0' encoding='UTF-8'?>");
+        emit("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        nl();
+        emit("<?xml-model href=\"https://github.com/DH-RSE/software-citation/raw/main/schema/tei_jtei_annotated.rng\" type=\"application/xml\" schematypens=\"http://relaxng.org/ns/structure/1.0\"?>");
+        nl();
+        emit("<?xml-model href=\"https://github.com/DH-RSE/software-citation/raw/main/schema/tei_jtei_annotated.rng\" type=\"application/xml\" schematypens=\"http://purl.oclc.org/dsdl/schematron\"?>");
         nl();
     }
 
@@ -75,9 +80,11 @@ public class DHEchoHandler extends DefaultHandler {
         if (textBuffer == null)
             return;
         String s = "" + textBuffer;
+        s = StringEscapeUtils.escapeXml10(s);
         for(String toolname : toolnames) {
             Pattern pattern = RegexPreparer.regexPreparation(toolname, ignoreCase);
-            s = RegexPreparer.replaceStringInText(pattern, s);
+            //s = RegexPreparer.replaceStringInText(pattern, s);
+            s = RegexPreparer.replaceStringInText(pattern, s, toolname);
         }
         emit(s);
         textBuffer = null;

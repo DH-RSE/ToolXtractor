@@ -17,10 +17,11 @@ public class DHPreAnnotation {
         for(LinkData linkAbstractTool : linkAbstractToolList) {
             if(! linkAbstractTool.getMentioned().isEmpty()) {
                 File xmlFile = new File(linkAbstractTool.getDhAbstract().getFilepath());
-                if (!new File("./output_annotation/").exists()) {
-                    new File("./output_annotation/").mkdir();
-                }
-                File outputXmlFile = new File("./output_annotation/" + xmlFile.getName());
+                //add new filepath here
+                //if (!new File("./output_annotation/").exists()) {
+                //    new File("./output_annotation/").mkdir();
+                //}
+                File outputXmlFile = new File(xmlFile.getPath() + "_new");
                 preAnnotateXmlFile(xmlFile, outputXmlFile, linkAbstractTool.getMentioned(), ignoreCase);
             }
         }
